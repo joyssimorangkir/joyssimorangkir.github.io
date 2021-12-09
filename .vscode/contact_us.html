@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="icon" href="favicon mayora.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
+    <style>
+        .header {
+            background: red;
+        }
+        .kontak {
+            color: #ffffff;
+            text-decoration:none;
+        }
+        .sub-head {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border-radius: 10px;
+        }
+        .footer {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="header row">
+        <div class="col-8"></div>
+        <div class="container-fluid p-3 text-black text-center col-2">
+            <a href="contact_us.html" class="kontak">Contact Us | Search</a>
+            <img src="search icon.png">
+        </div>
+    </div>
+    <div class="sub-head text-left m-3 p-3 row">
+        <div class="image-logo col">
+            <img src="logomayoranew.png" class="img-fluid" alt="mayora logo" width="100" height="100" >
+        </div>
+        <div class="navbar navbar-expand-sm text-right text-dark navbar-light">
+            <div class="container-fluid">
+              <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://fti.unai.edu/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://unai.edu/">Our Brands</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="biodata.html">Business Relations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gallery.html">CSR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bebas.html">Career</a>
+                        <li class="nav-item">
+                            <a class="nav-link " href="contact_us.html">News</a>
+                        </li>
+                    </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <h2 style="color: red; text-align: center;"><strong>K O N T A K</strong></h2>
+        <form action="/action_page.php">
+            <div class="mb-3 mt-3">
+                <label for="text">Nama Lengkap:</label>
+                <input type="text" class="form-control" id="text" placeholder="Silahkan isi nama lengkap Anda" name="text">
+            </div>
+            <div class="mb-3">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" placeholder="Silahkan isi alamat email Anda" name="email">
+            </div>
+            <div class="mb-3">
+                <label for="text">Usernam:</label>
+                <input type="text" class="form-control" id="text" placeholder="Tolong masukkan username Anda disini" name="text">
+            </div>
+            <div class="mb-3">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" placeholder="Tolong masukkan password Anda" name="password">
+            </div>
+            <label for="radio">Jenis Kelamin:</label>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1" checked>
+                <label class="form-check-label" for="radio1">Laki-laki</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option2" checked>
+                <label class="form-check-label" for="radio2">Perempuan</label>
+            </div>
+            <p for="sel1" class="form-label">Agama:</p>
+            <select class="form-select" id="sel1" name="sellist1">
+                <option>Kristen</option>
+                <option>Katolik</option>
+                <option>Islam</option>
+                <option>Hindu</option>
+                <option>Buddha</option>
+                <option>Konghucu</option>
+            </select>
+            <div class="mb-3 mt-3">
+                <label for="comment">Comments:</label>
+                <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+            </div>
+            <label for="text">Hobi:</label>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check1" name="option1" value="Menonton Film" checked>
+                <label class="form-check-label" for="check1">Menonton Film</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check2" name="option2" value="Membaca">
+                <label class="form-check-label" for="check2">Membaca</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check3" name="option3" value="Bernyanyi"> 
+                <label class="form-check-label">Bernyanyi</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check4" name="option4" value="Bermain Musik">
+                <label class="form-check-label">Bermain Musik</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check3" name="option5" value="Dll">
+                <label class="form-check-label">Dll</label>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Submit</button>
+        </form>
+    </div>
+    <div class="footer p-4">
+        <img src="footer.png">
+        <p style="color: white;">All Rights Reserved</p>
+    </div>
+</body>
+</html>
