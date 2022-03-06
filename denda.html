@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Denda</title>
+    <link rel="shortcut icon" href="ikon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        .header {
+            background-color: #2F496E;
+        }
+        .footer {
+            background-color: #2F496E;
+        }
+        .navbar {
+            background-color: #FFF;
+            border-radius: 15px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            font-size: 17px;
+        }
+        h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #FFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="header p-4 text-white text-center">
+        <h1>CRUD APLIKASI RENTAL MOBIL</h1>
+    </div>
+
+    <nav class="navbar navbar-expand-sm m-2 p-4">
+        <a class="navbar-brand" href="index.html">
+            <img src="brand.png" alt="logo brand" style="width: 120px; height: 60px;">
+        </a>
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Data Penyewa</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="mobil.html">Data Mobil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="peminjaman.html">Data Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="denda.html">Data Denda</a>
+               </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" id="app">
+        <div class="py-5 text-center">
+            <h2 class="lead"><strong>Berikut ini merupakan <i>CRUD(Create, Read, Update, Delete)</i> dari tabel denda</strong></h2>
+        </div>
+        <div class="col-md-12">
+            <h4 class="mb-3">Data Denda <button class="btn btn-md btn-primary" v-on:click="resetForm()">Buat Data Baru</button></h4>
+            <table class="table table-bordered table-hover">
+                <thead class="table-active">
+                    <tr>
+                        <th>ID</th>
+                        <th>Keterlambatan</th>
+                        <th>Kerusakan</th>
+                        <th>ID Mobil</th>
+                        <th>Total Denda</th>
+                        <th>Ubah</th>
+                        <th>Hapus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="Denda in Denda">
+                        <td>{{ Denda.idDenda }}</td>
+                        <td>{{ Denda.keterlambatan }}</td>
+                        <td>{{ Denda.kerusakan }}</td>
+                        <td>{{ Denda.idMobil }}</td>
+                        <td>{{ Denda.totalDenda }}</td>
+                        <td><button type="button" class="btn btn-warning" v-on:click="getEdit(Denda)">Ubah</button></td>
+                        <td><button type="button" class="btn btn-danger" v-on:click="getDelete(Denda)">Hapus</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="message" class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            <h4 class="mb-3">Silahkan Isi Formulir dibawah ini</h4>
+            <div class="mb-3 mt-3">
+                <label for="keterlambatan" class="form-label">Keterlambatan:</label>
+                <input v-model="keterlambatan" type="text" class="form-control" id="keterlambatan" required>
+                <div class="invalid-feedback">
+                    Diperlukan data yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="kerusakan" class="form-label">Kerusakan:</label>
+                <input v-model="kerusakan" type="text" class="form-control" id="kerusakan" required>
+                <div class="invalid-feedback">
+                    Diperlukan data yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="idMobil" class="form-label">ID Mobil:</label>
+                <input v-model="idMobil" type="text" class="form-control" id="idMobil" required>
+                <div class="invalid-feedback">
+                    Diperlukan data yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="totalDenda" class="form-label">Total Denda:</label>
+                <input v-model="totalDenda" type="text" class="form-control" id="totalDenda" required>
+                <div class="invalid-feedback">
+                    Diperlukan data yang valid.
+                </div>
+            </div>
+            <div class="container mb-3">
+                <div class="d-grid">
+                    <button v-if="!editMode && !deleteMode" v-on:click="createDenda" class="btn btn-primary btn-block" type="submit">Kirim</button>
+                    <button v-if="editMode" v-on:click="updateDenda" class="btn btn-warning btn-block" type="submit">Ubah</button>
+                    <button v-if="deleteMode" v-on:click="deleteDenda" class="btn btn-danger btn-block" type="submit">Hapus</button>
+                </div>   
+            </div>
+        </div>
+    </div>    
+
+    <div class="footer mt-5 p-4  text-white text-center">
+        <ul class="list-inline-expand">
+            <li class="list-inline-item"><a href="https://unai.edu/">Pusat Panggilan</a></li>
+            <li class="list-inline-item"><a href="https://fti.unai.edu/">Informasi</a></li>
+        </ul>
+        <p>&copy; 2022 Joys Simorangkir</p>
+    </div>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                erorrs: [],
+                message: null,
+                Denda: [],
+                DendaidDendaEdit: null,
+                DendaidDendaDelete: null,
+                editMode: false,
+                deleteMode: false,
+                keterlambatan: '',
+                kerusakan: '',
+                idMobil: '',
+                totalDenda: '',
+            },
+            mounted: function () {
+                this.getDenda();
+            },
+            methods: {
+                getDenda() {
+                    axios.get('https://621eff29849220b1fca6dc43.mockapi.io/Denda')
+                        .then(response => {
+                            this.Denda = response.data;
+                            console.log(response);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                },
+                createDenda: function () {
+                    axios.post('https://621eff29849220b1fca6dc43.mockapi.io/Denda', {
+                        keterlambatan: this.keterlambatan,
+                        kerusakan: this.kerusakan,
+                        idMobil: this.idMobil,
+                        totalDenda: this.totalDenda,
+                    })
+                    .then(response => {
+                        this.getDenda();
+                        this.message = "Data berhasil disimpan";
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                resetForm: function () {
+                    this.message = null;
+                    this.editMode= false;
+                    this.deleteMode = false;
+                    this.DendaidDendaEdit = null;
+                    this.keterlambatan = null;
+                    this.kerusakan = null;
+                    this.idMobil = null;
+                    this.totalDenda = null;
+                },
+                getEdit: function (Denda) {
+                    this.message = null;
+                    this.editMode = true;
+                    this.deleteMode = false;
+                    this.DendaidDendaEdit = Denda.idDenda;
+                    this.keterlambatan = Denda.keterlambatan;
+                    this.kerusakan = Denda.kerusakan;
+                    this.idMobil = Denda.idMobil;
+                    this.totalDenda = Denda.totalDenda;
+                },
+                getDelete: function (Denda) {
+                    this.message = null;
+                    this.deleteMode = true;
+                    this.editMode = false;
+                    this.DendaidDendaDelete = Denda.idDenda;
+                    this.keterlambatan = Denda.keterlambatan;
+                    this.kerusakan = Denda.kerusakan;
+                    this.idMobil = Denda.idMobil;
+                    this.totalDenda = Denda.totalDenda;
+                },
+                updateDenda: function () {
+                    axios.put(`https://621eff29849220b1fca6dc43.mockapi.io/Denda/${this.DendaidDendaEdit}`, {
+                        keterlambatan: this.keterlambatan,
+                        kerusakan: this.kerusakan,
+                        idMobil: this.idMobil,
+                        totalDenda: this.totalDenda,
+                    })
+                    .then(res => {
+                        this.message = "Data berhasil diperbarui";
+                        this.getDenda();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                },
+                deleteDenda: function () {
+                    axios.delete(`https://621eff29849220b1fca6dc43.mockapi.io/Denda/${this.DendaidDendaDelete}`)
+                    .then(res => {
+                        this.message = "Data sudah dihapus";
+                        this.getDenda();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
