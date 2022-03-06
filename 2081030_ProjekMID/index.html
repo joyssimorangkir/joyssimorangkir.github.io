@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Penyewa</title>
+    <link rel="shortcut icon" href="ikon.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        .header {
+            background-color: #2F496E;
+        }
+        .footer {
+            background-color: #2F496E;
+        }
+        .navbar {
+            background-color: #FFF;
+            border-radius: 15px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            font-size: 17px;
+        }
+        h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #FFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="header p-4 text-white text-center">
+        <h1>CRUD APLIKASI RENTAL MOBIL</h1>
+    </div>
+
+    <nav class="navbar navbar-expand-sm m-2 p-4">
+        <a class="navbar-brand" href="index.html">
+            <img src="brand.png" alt="logo brand" style="width: 120px; height: 60px;">
+        </a>
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Data Penyewa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mobil.html">Data Mobil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="peminjaman.html">Data Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="denda.html">Data Denda</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" id="app">
+        <div class="py-5 text-center">
+            <h2 class="lead"><strong>Berikut ini merupakan <i>CRUD(Create, Read, Update, Delete)</i> dari tabel penyewa</strong></h2>
+        </div>
+        <div class="col-md-12">
+            <h4 class="mb-3">Data Penyewa <button class="btn btn-md btn-primary" v-on:click="resetForm()">Buat Data Baru</button></h4>
+            <table class="table table-bordered table-hover">
+                <thead class="table-active">
+                    <tr>
+                        <th>ID</th>
+                        <th>No. KTP</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>No. HP</th>
+                        <th>Alamat</th>
+                        <th>Pekerjaan</th>
+                        <th>Ubah</th>
+                        <th>Hapus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="Penyewa in Penyewa">
+                        <td>{{ Penyewa.idPenyewa }}</td>
+                        <td>{{ Penyewa.noKtp }}</td>
+                        <td>{{ Penyewa.nama }}</td>
+                        <td>{{ Penyewa.jenisKelamin }}</td>
+                        <td>{{ Penyewa.noHp }}</td>
+                        <td>{{ Penyewa.alamat }}</td>
+                        <td>{{ Penyewa.pekerjaan }}</td>
+                        <td><button type="button" class="btn btn-warning" v-on:click="getEdit(Penyewa)">Ubah</button></td>
+                        <td><button type="button" class="btn btn-danger" v-on:click="getDelete(Penyewa)">Hapus</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="message" class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+            <h4 class="mb-3">Silahkan Isi Formulir dibawah ini</h4>
+            <div class="mb-3 mt-3">
+                <label for="noKtp" class="form-label">No. KTP:</label>
+                <input v-model="noKtp" type="text" class="form-control" id="noKtp" required>
+                <div class="invalid-feedback">
+                    Diperlukan No. KTP yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="nama" class="form-label">Nama:</label>
+                <input v-model="nama" type="text" class="form-control" id="nama" required>
+                <div class="invalid-feedback">
+                    Diperlukan nama yang valid.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="col-form-label">Jenis Kelamin:</label>
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-if="!deleteMode" type="radio" name="active" id="active" value="Laki-laki" v-model="jenisKelamin">
+                        <label class="form-check-label" for="active">Laki-laki</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-if="!deleteMode" type="radio" name="nActive" id="nActive" value="Perempuan" v-model="jenisKelamin">
+                        <label class="form-check-label" for="nActive">Perempuan</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="noHp" class="form-label">No. HP:</label>
+                <input v-model="noHp" type="text" class="form-control" id="noHp" required>
+                <div class="invalid-feedback">
+                    Diperlukan no. hp yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="comment">Alamat:</label>
+                <textarea v-model="alamat" class="form-control" rows="4" id="alamat" required></textarea>
+                <div class="invalid-feedback">
+                    Diperlukan alamat yang valid.
+                </div>
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="pekerjaan" class="form-label">Pekerjaan:</label>
+                <input v-model="pekerjaan" type="text" class="form-control" id="pekerjaan" required>
+                <div class="invalid-feedback">
+                    Diperlukan data pekerjaan yang valid.
+                </div>
+            </div>
+            <div class="container mb-3">
+                <div class="d-grid">
+                    <button v-if="!editMode && !deleteMode" v-on:click="createPenyewa" class="btn btn-primary btn-block" type="submit">Kirim</button>
+                    <button v-if="editMode" v-on:click="updatePenyewa" class="btn btn-warning btn-block" type="submit">Ubah</button>
+                    <button v-if="deleteMode" v-on:click="deletePenyewa" class="btn btn-danger btn-block" type="submit">Hapus</button>
+                </div>   
+            </div>
+        </div>
+    </div>
+
+    <div class="footer mt-5 p-4  text-white text-center">
+        <ul>
+            <li class="list-inline-item"><a href="https://unai.edu/">Pusat Panggilan</a></li>
+            <li class="list-inline-item"><a href="https://fti.unai.edu/">Informasi</a></li>
+        </ul>
+        <p>&copy; 2022 Joys Simorangkir</p>
+    </div>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                errors: [],
+                message: null,
+                Penyewa: [],
+                PenyewaidPenyewaEdit: null,
+                PenyewaidPenyewaDelete: null,
+                editMode: false,
+                deleteMode: false,
+                noKtp: '',
+                nama: '',
+                jenisKelamin: '',
+                noHp: '',
+                alamat: '',
+                pekerjaan: '',
+            },
+            mounted: function () {
+                this.getPenyewa();
+            },
+            methods: {
+                getPenyewa() {
+                    axios.get('https://621eff29849220b1fca6dc43.mockapi.io/Penyewa')
+                        .then(response => {
+                            this.Penyewa = response.data;
+                            console.log(response);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                },
+                createPenyewa: function () {
+                    axios.post('https://621eff29849220b1fca6dc43.mockapi.io/Penyewa', {
+                        noKtp: this.noKtp,
+                        nama: this.nama,
+                        jenisKelamin: this.jenisKelamin,
+                        noHp: this.noHp,
+                        alamat: this.alamat,
+                        pekerjaan: this.pekerjaan,
+                    })
+                    .then(response => {
+                        this.getPenyewa();
+                        this.message = "Data berhasil disimpan";
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                },
+                resetForm: function () {
+                    this.message = null;
+                    this.editMode= false;
+                    this.deleteMode = false;
+                    this.PenyewaidPenyewaEdit = null;
+                    this.noKtp = null;
+                    this.nama = null;
+                    this.jenisKelamin = null;
+                    this.noHp = null;
+                    this.alamat = null;
+                    this.pekerjaan = null;
+                },
+                getEdit: function (Penyewa) {
+                    this.message = null;
+                    this.editMode = true;
+                    this.deleteMode = false;
+                    this.PenyewaidPenyewaEdit = Penyewa.idPenyewa;
+                    this.noKtp = Penyewa.noKtp;
+                    this.nama = Penyewa.nama;
+                    this.jenisKelamin = Penyewa.jenisKelamin;
+                    this.noHp = Penyewa.noHp;
+                    this.alamat = Penyewa.alamat;
+                    this.pekerjaan = Penyewa.pekerjaan;
+                },
+                getDelete: function (Penyewa) {
+                    this.message = null;
+                    this.deleteMode = true;
+                    this.editMode = false;
+                    this.PenyewaidPenyewaDelete = Penyewa.idPenyewa;
+                    this.noKtp = Penyewa.noKtp;
+                    this.nama = Penyewa.nama;
+                    this.jenisKelamin = Penyewa.jenisKelamin;
+                    this.noHp = Penyewa.noHp;
+                    this.alamat = Penyewa.alamat;
+                    this.pekerjaan = Penyewa.pekerjaan;
+                },
+                updatePenyewa: function () {
+                    axios.put(`https://621eff29849220b1fca6dc43.mockapi.io/Penyewa/${this.PenyewaidPenyewaEdit}`, {
+                        noKtp: this.noKtp,
+                        nama: this.nama,
+                        jenisKelamin: this.jenisKelamin,
+                        noHp: this.noHp,
+                        alamat: this.alamat,
+                        pekerjaan: this.pekerjaan,
+                    })
+                    .then(res => {
+                        this.message = "Data berhasil diperbarui";
+                        this.getPenyewa();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                },
+                deletePenyewa: function () {
+                    axios.delete(`https://621eff29849220b1fca6dc43.mockapi.io/Penyewa/${this.PenyewaidPenyewaDelete}`)
+                    .then(res => {
+                        this.message = "Data sudah dihapus";
+                        this.getPenyewa();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
